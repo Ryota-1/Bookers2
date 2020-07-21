@@ -1,0 +1,40 @@
+<div class="container">
+<% if @book.errors.any? %>
+  <h3><%= @book.errors.count %> errors prohibited this obj from being saved:</h3>
+  <div id="error_explanation" class="alert alert-danger">
+    <ul>
+      <% @book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+  <div class="row">
+      <div class="col-lg-6 col-lg-offset-3">
+        <h2>Editing Book</h2>
+          <%= form_for(@book) do |f| %>
+            <label>Title</label>
+          <br>
+            <%= f.text_field :title, class: "book_title col-xs-12" %>
+          <br>
+            <label>Opinion</label>
+          <br>
+            <%= f.text_area :body, class: "book_body col-xs-12" %>
+          <br>
+          <br>
+          <br>
+            <div class="actions">
+              <%= f.submit 'Update Book', class: "btn btn-primary col-xs-12" %>
+            </div>
+          <br>
+            <td><%= link_to "Show", book_path, class: "books" %></td>
+            <td>|</td>
+            <td><%= link_to "Back", books_path, class: "back" %></td>
+          <% end %>
+      </div>
+
+      <div class="col-xs-3 col-xs-offset-9">
+          <p>CopyRight Infratop.inc</p>
+      </div>
+  </div>
+</div>

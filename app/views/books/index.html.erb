@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+      <div class="col-lg-3">
+      <%= render 'portion/list', book: @book, user: @user %>
+      </div>
+    <div class="col-lg-9">
+      <h2>Books</h2>
+          <table class="table table-striped">
+            <thead>
+                <tr align="center">
+                    <th></th>
+                    <th>title</th>
+                    <th>opinion</th>
+                    <th colspan="3"></th>
+                </tr>
+            </thead>
+            <tbody>
+              <% @books.reverse_each do |book| %>
+            <tr>
+                  <td><%= attachment_image_tag book.user, :profile_image, :fill, 40, 40, format:'jpeg', fallback: "no_image.jpg" %></td>
+                  <td><%= link_to book.title, book_path(book.id) %></td>
+                  <td><%= book.body %></td>
+              </tr>
+                  <% end %>
+            </tbody>
+          </table>
+    </div>
+
+    <div class="col-xs-3 col-xs-offset-9">
+          <p>CopyRight Infratop.inc</p>
+    </div>
+  </div>
+</div>
