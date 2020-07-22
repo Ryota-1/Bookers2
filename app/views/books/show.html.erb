@@ -1,9 +1,9 @@
 <div class="container">
     <div class="row">
-      <div class="col-lg-3">
-      <%= render 'portion/list', book: @book, user: @bookdetail.user %>
+      <div class="col-xs-3">
+      <%= render 'books/list', book: @book, user: @bookdetail.user %>
       </div>
-      <div class="col-lg-9">
+      <div class="col-xs-9">
       <h2>Book detail</h2>
           <table class="table table-striped">
               <thead>
@@ -17,14 +17,18 @@
             </thead>
             <tbody>
             <tr>
-                  <td><%= attachment_image_tag @bookdetail.user, :profile_image, :fill, 40, 40, format:'jpeg', fallback: "no_image.jpg" %></td>
+                  <td>
+                    <%= link_to user_path(@bookdetail.user) do %>
+                    <%= attachment_image_tag @bookdetail.user, :profile_image, :fill, 40, 40, format:'jpeg', fallback: "no_image.jpg" %>
+                    <% end %>
+                  </td>
                   <td><%= link_to @bookdetail.user.name, user_path(@bookdetail.user.id) %></td>
                   <td><%= link_to @bookdetail.title, book_path(@bookdetail.id) %></td>
                   <td><%= @bookdetail.body %></td>
                   <% if @bookdetail.user_id == current_user.id %>
                       <th><%= link_to "Edit", edit_book_path(@bookdetail.id), class: "btn-sm btn-success edit_book_#{@bookdetail.id}" %></th>
                       <th><%= link_to "Destroy", book_path(@bookdetail.id), method: :delete, "data-confirm" => "本当に削除しますか？", class: "btn-sm btn-danger destroy_book_#{@bookdetail.id}" %></th>
-                      <% end %>
+                  <% end %>
               </tr>
             </tbody>
           </table>

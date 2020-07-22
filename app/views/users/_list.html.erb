@@ -1,0 +1,45 @@
+<% if @book.errors.any? %>
+  <h3><%= @book.errors.count %> errors prohibited this obj from being saved:</h3>
+  <div id="error_explanation" class="alert alert-danger">
+    <ul>
+      <% @book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<div>
+    <h1>User info</h1>
+    <%= attachment_image_tag user, :profile_image, :fill, 60, 60, format: 'jpeg', fallback: "no_image.jpg" %>
+
+        <table class="table">
+            <tbody>
+              <tr>
+                <th>name</th>
+                <td><%= user.name %></td>
+              </tr>
+              <tr>
+                <th>introduction</th>
+                <td><%= user.introduction %></td>
+              </tr>
+            </tbody>
+        </table>
+        <%= link_to "", edit_user_path(user),  class: "col-lg-12 btn btn-default glyphicon glyphicon-wrench" %>
+
+    <h2>New book</h2>
+      <%= form_for(book) do |f| %>
+          <label>Title</label>
+      <br>
+          <%= f.text_field :title, class: "col-xs-12 book_title" %>
+      <br>
+          <label>opinion</label>
+      <br>
+          <%= f.text_area :body, class: "col-xs-12 book_body" %>
+      <br>
+      <br>
+      <br>
+      <div class="actions">
+          <%= f.submit 'Create Book', class: "btn btn-primary col-xs-12" %>
+      </div>
+      <% end %>
+</div>
