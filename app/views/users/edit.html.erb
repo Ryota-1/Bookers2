@@ -1,35 +1,26 @@
-<div class="container">
-    <% if @user.errors.any? %>
-  <h3><%= @user.errors.count %> errors prohibited this obj from being saved:</h3>
-  <div id="error_explanation" class="alert alert-danger">
-    <ul>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-    </ul>
-  </div>
+<h2>User info</h2>
+
+<%= form_for(@user) do |f| %>
+
+	<%= render 'layouts/error_messages', resource: @user %>
+
+	<div class="field">
+		<%= f.label :name %>
+		<%= f.text_field :name, class: "name" %>
+	</div>
+
+	<div class="field">
+		<%= f.label :image %>
+		<%= f.attachment_field :profile_image, class: "user_image" %>
+	</div>
+
+	<div class="field">
+		<%= f.label :introduction %>
+		<%= f.text_area :introduction, class: "introduction" %>
+	</div>
+
+	<div class="actions">
+		<%= f.submit %>
+	</div>
+
 <% end %>
-  <div class="row">
-    <div class="col-xs-3">
-      <h2>User info</h2>
-        <%= form_for(@user) do |f| %>
-            <label>Name</label>
-        <br>
-            <%= f.text_field :name, class: "name" %>
-        <br>
-            <label>Image</label>
-            <%= f.attachment_field :profile_image, placeholder: "プロフィール画像", class: "user-image" %>
-            <label>Introduction</label>
-        <br>
-            <%= f.text_area :introduction, class: "introduction" %>
-        <br>
-        <br>
-        <br>
-            <%= f.submit "Update User", class: "edit_user#{current_user.id}" %>
-        <% end %>
-    </div>
-    <div class="col-xs-3 col-xs-offset-9">
-        <p>CopyRight Infratop.inc</p>
-    </div>
-  </div>
-</div>

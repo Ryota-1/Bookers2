@@ -1,56 +1,37 @@
-<div class="container">
+<h2>Sign up</h2>
 
-    <h2>Sign up</h2>
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= devise_error_messages! %>
-        <span style="color:red">
-            <% if @user.errors.any? %>
-                <h3><%= @user.errors.count %> errors prohibited this user from being saved:</h3>
-                <div id="error_explanation" class="alert alert-danger">
-                    <ul>
-                        <span style="color:red">
-                            <% @user.errors.full_messages.each do |message| %>
-                            <li><%= message %></li>
-                            <% end %>
-                        </span>
-                    </ul>
-                </div>
-            <% end %>
-        </span>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
 
-    <div class="row">
-        <div class="col-lg-2">
+  <!--name表示の追加-->
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, autofocus: true, class: "name" %>
+  </div>
+  <!--name表示の追加-->
 
-            <label>Name</label>
-        <br>
-            <%= f.text_field :name, class: "name" %>
-        <br>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, class: "email" %>
+  </div>
 
-            <label>Email</label>
-        <br>
-            <%= f.email_field :email, class: "email", id:"inputEmail" %>
-        <br>
+  <div class="field">
+    <%= f.label :password %>
+    <% if @minimum_password_length %>
+    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %><br />
+    <%= f.password_field :password, autocomplete: "new-password", class: "password" %>
+  </div>
 
-            <label>Password (6 characters minimum)</label>
-        <br>
-            <%= f.password_field :password, autocomplete: "off", class: "password", id:"inputPassword"  %>
-        <br>
+<!--パスワード確認入力フォーム-->
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "password_confirm" %>
+  </div>
 
-            <label>Password</label>
-        <br>
-            <%= f.password_field :password_confirmation, autocomplete: "off", class: "password_confirm", id:"inputConfirmPassword" %>
-        <br>
-        <br>
+  <div class="actions">
+    <%= f.submit "Sign up",class: "btn btn-success" %>
+  </div>
+<% end %>
 
-            <%= f.submit "Sign up", class: "btn btn-success" %>
-    <% end %>
-        <br>
-            <%= link_to "login", new_user_session_path, class: "sign_in" %>
-        </div>
-
-        <div class="col-lg-3 col-lg-offset-9">
-              <p>CopyRight Infratop.inc</p>
-        </div>
-
-    </div>
-</div>
+<%= render "devise/shared/links" %>

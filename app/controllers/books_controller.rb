@@ -1,64 +1,56 @@
 class BooksController < ApplicationController
-     before_action :authenticate_user!
+  before_action :authenticate_user!
+  before_action :ensure_correct_user, only: [:edit, :update, :destroy]
 
-    def create
-        @book = Book.new(book_params)
-        @book.user_id = current_user.id
-        if @book.save
-            flash[:success] = "You have creatad book successfully."
-            redirect_to book_path(@book.id)
-        else
-            @books = Book.all
-            @user = current_user
-            render :action => "index"
-        end
+  def show
+    @book = Book.find(params[:id])
+    @book_new = Book.new
+    @book_comment = BookComment.new
+    @book_comments = @book.book_comments
+  end
+
+  def index
+    @books = Book.all
+    @book = Book.new
+  end
+
+  def create
+    @book = Book.new(book_params)
+    @book.user_id = current_user.id
+    if @book.save
+      redirect_to book_path(@book), notice: "You have created book successfully."
+    else
+      @books = Book.all
+      render 'index'
     end
+  end
 
-    def index
-        @books = Book.all
-        @book = Book.new
-        @user = current_user
-        @users = User.all
+  def edit
+  end
+
+  def update
+    if @book.update(book_params)
+      redirect_to book_path(@book), notice: "You have updated book successfully."
+    else
+      render "edit"
     end
+  end
 
-    def show
-        @new_book = Book.new
-        @book = Book.find(params[:id])
-        @user = @book.user
-        @book_comment = BookComment.new
+  def destroy
+    @book.destroy
+    redirect_to books_path
+  end
+
+  private
+
+  def book_params
+    params.require(:book).permit(:title, :body)
+  end
+
+  def ensure_correct_user
+    @book = Book.find(params[:id])
+    unless @book.user == current_user
+      redirect_to books_path
     end
-
-    def edit
-        @book = Book.find(params[:id])
-        if @book.user_id != current_user.id
-            redirect_to books_path
-        end
-    end
-
-    def update
-        @book = Book.find(params[:id])
-        if @book.update(book_params)
-            flash[:success] = "You have updated user successfully."
-            redirect_to book_path
-        else
-            render :action => "edit"
-        end
-    end
-
-    def destroy
-        @book = Book.find(params[:id])
-        @book.destroy
-        flash[:success] = "You have delete user successfully."
-        redirect_to books_path
-    end
-
-    private
-
-    def book_params
-        params.require(:book).permit(:title, :body )
-    end
-
-    def user_params
-        params.require(:user).permit(:name, :profile_image, :introduction)
-    end
+  end
 end
