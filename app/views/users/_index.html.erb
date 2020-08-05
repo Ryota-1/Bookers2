@@ -1,0 +1,35 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>image</th>
+      <th>name</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% users.each do |user| %>
+    <tr>
+      <td><%= attachment_image_tag(user, :profile_image, :fill, 50, 50, fallback: "no-image-mini.jpg") %></td>
+
+      <td><%= user.name%></td>
+
+      <td>follows：<%= link_to user.follows.count, follows_user_path(user) %></td>
+
+      <td>followers：<%= link_to user.followers.count,  followers_user_path(user) %></td>
+
+      <td>
+        <% if user != current_user %>
+          <% if user.followed_by?(current_user) %>
+            <%= link_to "フォロー解除", user_relationships_path(user_id: user.id), method: :delete, class: "btn btn-sm btn-danger" %>
+          <% else %>
+            <%= link_to "フォローする", user_relationships_path(user_id: user.id), method: :post, class: "btn btn-sm btn-primary" %>
+          <% end %>
+        <% end %>
+      </td>
+
+      <td><%= link_to "Show", user, class: "user_#{user.id}" %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
