@@ -1,60 +1,35 @@
 class SerchController < ApplicationController
-
-	before_action :authenticate_user!
+  before_action :authenticate_user!
 
   def search
     @model = params["search"]["model"]
     @content = params["search"]["content"]
-    @how = params["search"]["how"]
-    @datas = search_for(@how, @model, @content)
-    @newbook = Book.new
+    @method = params["search"]["method"]
+    @records = search_for(@model, @content, @method)
   end
 
   private
-
-  def match(model, content)
+  def search_for(model, content, method)
     if model == 'user'
-      @users = User.where(name: content)
+      if method == 'perfect'
+        User.where(name: content)
+      elsif method == 'forword'
+        User.where('name LIKE ?', content+'%')
+      elsif method == 'backword'
+        User.where('name LIKE ?', '%'+content)
+      else
+        User.where('name LIKE ?', '%'+content+'%')
+      end
     elsif model == 'book'
-      @books = Book.where(title: content)
+      if method == 'perfect'
+      	Book.where(title: content)
+      elsif method == 'forword'
+      	Book.where('title LIKE ?', content+'%')
+      elsif method == 'backward'
+      	Book.where('title LIKE ?', '%'+content)
+      else
+      	Book.where('title LIKE ?', '%'+content+'%')
+      end
     end
   end
-
-  def forward(model, content)
-    if model == 'user'
-      @users = User.where("name LIKE ?", "#{content}%")
-    elsif model == 'book'
-      @books = Book.where("title LIKE ?", "#{content}%")
-    end
-  end
-
-  def backward(model, content)
-    if model == 'user'
-      @users = User.where("name LIKE ?", "%#{content}")
-    elsif model == 'book'
-      @books = Book.where("title LIKE ?", "%#{content}")
-    end
-  end
-
-  def partical(model, content)
-    if model == 'user'
-      @users = User.where("name LIKE ?", "%#{content}%")
-    elsif model == 'book'
-      @books = Book.where("title LIKE ?", "%#{content}%")
-    end
-  end
-
-  def search_for(how, model, content)
-    case how
-    when 'match'
-      match(model, content)
-    when 'forward'
-      forward(model, content)
-    when 'backward'
-      backward(model, content)
-    when 'partical'
-      partical(model, content)
-    end
-  end
-
 end
